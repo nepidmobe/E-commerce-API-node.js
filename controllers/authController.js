@@ -20,10 +20,37 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  res.send("log in");
+  const { email, password } = req.body;
+  if (!email || !password) {
+    throw new CustomError.BadRequestError(
+      "please provide missing email or password"
+    );
+  }
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new CustomError.UnauthenticatedError(
+      "there is no account registered with those credentials"
+    );
+  }
+  const isPassword = await user.comparePassword(password);
+  if (!isPassword) {
+    throw new CustomError.UnauthenticatedError("credential mismatch");
+  }
+  const tokenUser = { name: user.name, userId: user._id, role: user.role };
+  attachCookiesToResponse({ res, user: tokenUser });
+  res.status(StatusCodes.CREATED).json({ user: tokenUser });
 };
 const logout = async (req, res) => {
-  res.send("log out");
+  //set cookie value for same name set in login/register to random string which gives wrong jwt.
+  //and set time expiry very small or 0 eg here i set 5 sec first now 0(current time)
+  //you can alse set value for cookie key to empty string"". for random string that comes to your mind is ok.
+
+  res.cookie("token", "logout", {
+    httpOnly: true,
+    expires: new Date(Date.now()),
+  });
+  res.status(StatusCodes.OK).json({ msg: "logged out" });
+  // as far log out you don't have to send anything back. only status code is enough
 };
 
 module.exports = { register, login, logout };
