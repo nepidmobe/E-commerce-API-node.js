@@ -51,6 +51,7 @@ const logout = async (req, res) => {
   });
   res.status(StatusCodes.OK).json({ msg: "logged out" });
   // as far log out you don't have to send anything back. only status code is enough
+  //log-out, there is refres button in console application in browwser to know expiry date in browser
 };
 
 module.exports = { register, login, logout };
