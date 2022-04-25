@@ -58,6 +58,10 @@ const ProductSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    numberOfReviews: {
+      type: Number,
+      default: 0,
+    },
     user: {
       type: mongoose.Types.ObjectId,
       ref: "User",
@@ -78,5 +82,11 @@ ProductSchema.virtual("reviews", {
 //just one give one review but product may have any number of list so, it is made false to get array of reviews
 //local field should match foreign field in review.foreign field in review =local field in product
 // now can populate in reverse if review has refrence to product and product donot have than ...
+//with virtual populate you cannot query or filter reviews so, use controller and make routes for such operation.
+
+ProductSchema.pre("remove", async function (next) {
+  await this.model("Review").deleteMany({ product: this._id });
+  //important of remove. once product deleted all associated review must be deleted too.
+});
 
 module.exports = mongoose.model("Product", ProductSchema);

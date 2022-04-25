@@ -33,4 +33,17 @@ const ReviewSchema = new mongoose.Schema(
 //user can give not more than 1 review//another way in create review controller checking db with prodid & userid
 ReviewSchema.index({ products: 1, user: 1 }), { unique: true };
 
+//static method in mongoose can be call in obj of schema without instances made in controllers
+ReviewSchema.statics.calculateAverageRating = async function (productId) {};
+
+ReviewSchema.post("save", async function () {
+  await this.constructor.calculateAverageRating(this.product); //calling static mongoose instance
+  //no of review in product schema to increase
+});
+
+ReviewSchema.post("save", async function () {
+  await this.constructor.calculateAverageRating(this.product); //calling static mongoose instance
+  //number of review in product field to decrease
+});
+
 module.exports = mongoose.model("Review", ReviewSchema);
