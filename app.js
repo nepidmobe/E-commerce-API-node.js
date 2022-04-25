@@ -7,6 +7,7 @@ const app = express();
 //rest of Packages
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
+const fileUpload = require("express-fileupload");
 
 const port = process.env.PORT || 3000;
 
@@ -24,6 +25,8 @@ const errorHandlerMiddleware = require("./middleware/error-handler");
 app.use(morgan("tiny"));
 app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));
+app.use(express.static("public"));
+app.use(fileUpload());
 //Using process.env.JWT_SECRET(signature) as parameter signs our cookies as signed: true is set
 
 // app.use(morgan("tiny"));
