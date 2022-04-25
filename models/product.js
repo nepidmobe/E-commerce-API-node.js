@@ -64,7 +64,19 @@ const ProductSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
+
+ProductSchema.virtual("reviews", {
+  ref: "Review",
+  localField: "_id",
+  foreignField: "product",
+  justOne: false,
+  // match: { rating: 2 },
+});
+//reviews act as new field in product model. match matches and give rating with 2 review.
+//just one give one review but product may have any number of list so, it is made false to get array of reviews
+//local field should match foreign field in review.foreign field in review =local field in product
+// now can populate in reverse if review has refrence to product and product donot have than ...
 
 module.exports = mongoose.model("Product", ProductSchema);
