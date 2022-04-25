@@ -14,6 +14,7 @@ const connectDB = require("./db/connect");
 
 // routes import
 const authRouter = require("./routes/authRoutes");
+const userRouter = require("./routes/userRoutes");
 
 //middlewares
 const notFound = require("./middleware/not-found");
@@ -36,6 +37,7 @@ app.get("/api/v1", (req, res) => {
   res.send("dipen");
 });
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/users", userRouter);
 
 app.use(notFound);
 app.use(errorHandlerMiddleware);

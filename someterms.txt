@@ -2,7 +2,7 @@
 //what is refreshToken and accessToken means
 //adding(sending) cookie to response very esay res.cookie() is express function help on that but for accessing
 //accessing cookie in in server coming from from client we need npm package to parse called cookie-parser.
-//cookie cannot be accessed from cliend side bud local store variable can be accessed and manipulated  
+//cookie cannot be accessed from client side bud local store variable can be accessed and manipulated  
 //so we don't have to do anything on client side for cookie related code browser handles that ulike 
 //local storage where storage and send should be handled using client side code
 //downside of cookie is only can send 4096byte cookie 
